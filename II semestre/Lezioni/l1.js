@@ -26,7 +26,7 @@ function Persona_obj(nome, eta){
     return questo
 }
 
-let gianni = new Persona_obj("gianni", 35)
+let gianni = Persona_obj("gianni", 35)
 
 //funzionano allo stesso modo ma chiaramente la seconda versione è migliore e utilizza il metodo this
 
@@ -40,5 +40,5 @@ function Persona(nome, eta){
     //come se avessi return this
 }
 
-andrea = Persona("andrea", 24)
+andrea = new Persona("andrea", 24)
 //Ogni oggetto ha un prototipo (esso stesso un oggetto), il prototipo può avere prototipi
