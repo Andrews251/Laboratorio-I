@@ -1,0 +1,106 @@
+Si scriva una classe TesseraTrasporti che rappresenta una carta prepagata per i mezzi pubblici.
+
+Il costruttore prende due argomenti:
+
+    codice, una stringa che deve essere composta esattamente da 5 caratteri alfanumerici (lettere minuscole, maiuscole o numeri).
+
+    credito, un numero non negativo (di default impostato a 0).
+
+Se i parametri non sono validi (es. il codice non rispetta il formato o il credito è negativo), il costruttore deve lanciare un'eccezione di tipo TypeError.
+
+Tutti i campi interni alla classe usati per memorizzare lo stato devono essere privati.
+
+La classe deve offrire:
+
+    Un getter creditoResiduo che consente l'accesso in sola lettura al credito corrente.
+
+    Un metodo ricarica(importo) che aggiunge importo al credito. Deve lanciare TypeError se l'importo non è un numero strettamente positivo.
+
+    Un metodo timbra(costo, linea) che sottrae costo dal credito.
+
+        Deve lanciare TypeError se costo non è un numero strettamente positivo o linea non è una stringa non vuota.
+
+        Deve lanciare un'eccezione custom CreditoEsauritoError se il costo del biglietto è maggiore del credito disponibile.
+
+        Se il pagamento va a buon fine, deve registrare internamente il viaggio salvando un oggetto con le proprietà: linea (stringa), costo (numero) e data (istanza di Date generata al momento della timbratura).
+
+    Un metodo generatore *storicoViaggi() che produce, uno alla volta, i viaggi effettuati dal più recente al meno recente. Modificare gli oggetti restituiti dal generatore non deve alterare lo stato interno della tessera.
+
+Si scriva poi una sottoclasse TesseraStudenti che estende TesseraTrasporti:
+
+    Il costruttore prende in input codice, credito e una stringa istituto. Se l'istituto non è una stringa non vuota, lancia TypeError.
+
+    Sovrascrive il metodo timbra(costo, linea): gli studenti hanno diritto a uno sconto del 50% fisso su ogni corsa. Il metodo deve quindi richiamare la logica della superclasse ma applicando il costo dimezzato.
+
+
+
+    let tessera = new TesseraStudenti("AB123", 10, "UniPi");
+    tessera.timbra(3, "LAM Rossa"); // Essendo studente, pagherà 1.5
+    // tessera.creditoResiduo sarà 8.5
+
+
+ Si scriva una classe Sensore con le seguenti caratteristiche:
+
+     Il costruttore riceve id (una stringa che deve iniziare obbligatoriamente con la lettera "S" seguita da un trattino e 3 cifre, es. "S-001") e modello (stringa non vuota). Se le validazioni falliscono, lancia TypeError.
+
+     Tutti i dati interni devono essere privati.
+
+     Un metodo registra(valore) che accetta un numero e lo salva internamente associandolo alla data/ora corrente (new Date()). Se il valore non è un numero, lancia TypeError.
+
+     Un metodo generatore *letture() che produce una ad una le letture registrate dalla più vecchia alla più recente, restituendo oggetti del tipo { valore: 25.5, timestamp: Date }. Modificare gli oggetti restituiti non deve alterare lo stato interno del sensore.
+
+ Si scriva poi l'eccezione personalizzata AllarmeSogliaError.
+
+ Si scriva infine la sottoclasse SensoreSoglia che estende Sensore:
+
+     Il costruttore accetta id, modello e sogliaMax (un numero).
+
+     Sovrascrive il metodo registra(valore). Il metodo deve salvare regolarmente la lettura (sfruttando la logica della superclasse), ma subito dopo, se il valore registrato è strettamente maggiore di sogliaMax, deve lanciare l'eccezione AllarmeSogliaError.
+
+
+ESERCIZIO 2:
+
+Si scriva una classe Sensore con le seguenti caratteristiche:
+
+    Il costruttore riceve id (una stringa che deve iniziare obbligatoriamente con la lettera "S" seguita da un trattino e 3 cifre, es. "S-001") e modello (stringa non vuota). Se le validazioni falliscono, lancia TypeError.
+
+    Tutti i dati interni devono essere privati.
+
+    Un metodo registra(valore) che accetta un numero e lo salva internamente associandolo alla data/ora corrente (new Date()). Se il valore non è un numero, lancia TypeError.
+
+    Un metodo generatore *letture() che produce una ad una le letture registrate dalla più vecchia alla più recente, restituendo oggetti del tipo { valore: 25.5, timestamp: Date }. Modificare gli oggetti restituiti non deve alterare lo stato interno del sensore.
+
+Si scriva poi l'eccezione personalizzata AllarmeSogliaError.
+
+Si scriva infine la sottoclasse SensoreSoglia che estende Sensore:
+
+    Il costruttore accetta id, modello e sogliaMax (un numero).
+
+    Sovrascrive il metodo registra(valore). Il metodo deve salvare regolarmente la lettura (sfruttando la logica della superclasse), ma subito dopo, se il valore registrato è strettamente maggiore di sogliaMax, deve lanciare l'eccezione AllarmeSogliaError.
+
+
+
+ESERCIZIO 3:
+
+In questo esercizio gestiremo una struttura dati complessa per simulare i processi di calcolo in coda sul server del laboratorio.
+
+Si scriva una classe Job:
+
+    Costruttore: codice (esattamente 2 lettere maiuscole seguite da 3 cifre, es. "AB123"), e priorita (un numero intero da 1 a 10 compresi). Se i parametri non sono validi, lancia TypeError.
+
+    I campi devono essere accessibili in sola lettura tramite getter (es. get codice()).
+
+Si scrivano due eccezioni personalizzate: CodaPienaError e CodaVuotaError.
+
+Si scriva la classe GestoreProcessi:
+
+    Costruttore: maxSize (numero intero strettamente positivo, indica quanti job al massimo possono stare in coda contemporaneamente). Se invalido lancia TypeError.
+
+    Deve mantenere internamente e privatamente la lista dei job in attesa e la lista dei job già eseguiti.
+
+    Metodo accoda(job): verifica che l'argomento sia un'istanza della classe Job (altrimenti lancia TypeError). Se la coda ha già raggiunto maxSize, lancia CodaPienaError. Altrimenti, aggiunge il job in fondo alla coda di attesa.
+
+    Metodo eseguiProssimo(): se la coda di attesa è vuota, lancia CodaVuotaError. Altrimenti, cerca il job con la priorità più alta (dove 10 è la massima e 1 la minima). Se ci sono più job con la stessa priorità massima, sceglie quello inserito per primo (logica FIFO a parità di priorità). Il job scelto viene rimosso dalla coda di attesa, inserito nella lista dei job eseguiti, e infine restituito dal metodo.
+
+    Metodo generatore *storico(): produce uno ad uno i job eseguiti (dal più recentemente eseguito al meno recente).
+
